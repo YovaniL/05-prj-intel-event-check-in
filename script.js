@@ -103,6 +103,67 @@ form.addEventListener("submit", function (event) {
         "powerCount"
       ).parentElement.style.backgroundColor =
         maxTeam === "power" ? "#ffe066" : "";
+
+      // Confetti effect
+      launchConfetti();
+    }
+
+    // Confetti function
+    function launchConfetti() {
+      const confettiContainer = document.createElement("div");
+      confettiContainer.style.position = "fixed";
+      confettiContainer.style.left = 0;
+      confettiContainer.style.top = 0;
+      confettiContainer.style.width = "100vw";
+      confettiContainer.style.height = "100vh";
+      confettiContainer.style.pointerEvents = "none";
+      confettiContainer.style.zIndex = 9999;
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement("div");
+        confetti.style.position = "absolute";
+        confetti.style.width = "10px";
+        confetti.style.height = "18px";
+        confetti.style.backgroundColor = randomColor();
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = "-30px";
+        confetti.style.opacity = 0.8;
+        confetti.style.borderRadius = "3px";
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        confettiContainer.appendChild(confetti);
+
+        // Animate confetti
+        let fall = setInterval(function () {
+          let top = parseFloat(confetti.style.top);
+          if (top > window.innerHeight) {
+            clearInterval(fall);
+            confetti.remove();
+          } else {
+            confetti.style.top = top + 4 + Math.random() * 4 + "px";
+            confetti.style.left =
+              parseFloat(confetti.style.left) + Math.sin(top / 30) * 2 + "px";
+          }
+        }, 16);
+      }
+      // Remove confetti after 4 seconds
+      setTimeout(function () {
+        confettiContainer.remove();
+      }, 4000);
+    }
+    function randomColor() {
+      const colors = [
+        "#ff595e",
+        "#ffca3a",
+        "#8ac926",
+        "#1982c4",
+        "#6a4c93",
+        "#fff",
+        "gold",
+        "hotpink",
+        "aqua",
+      ];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
 
     form.reset();
